@@ -9,7 +9,7 @@
 
 	<groupId>com.3pillarglobal.labs</groupId>
 	<artifactId>spring-integration-aws</artifactId>
-	<version>2.0.0-ab-SNAPSHOT</version>
+	<version>2.0.1-ab-SNAPSHOT</version>
 	<name>Spring Integration AWS</name>
 	<description>A collection of channels and channel adapters for receiving and sending messages using Amazon Simple Queue Service (SQS) and Amazon
 		Simple Notification Service (SNS).
