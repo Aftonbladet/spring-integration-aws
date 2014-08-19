@@ -10,18 +10,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.SmartLifecycle;
-import org.springframework.integration.Message;
-import org.springframework.integration.MessagingException;
 import org.springframework.integration.aws.sqs.SqsHeaders;
 import org.springframework.integration.aws.sqs.core.SqsExecutor;
 import org.springframework.integration.channel.AbstractMessageChannel;
-import org.springframework.integration.core.MessageHandler;
-import org.springframework.integration.core.PollableChannel;
-import org.springframework.integration.core.SubscribableChannel;
 import org.springframework.integration.dispatcher.MessageDispatcher;
 import org.springframework.integration.dispatcher.RoundRobinLoadBalancingStrategy;
 import org.springframework.integration.dispatcher.UnicastingDispatcher;
 import org.springframework.integration.support.MessageBuilder;
+import org.springframework.messaging.*;
 import org.springframework.util.Assert;
 
 

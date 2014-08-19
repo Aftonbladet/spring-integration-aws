@@ -7,15 +7,15 @@ import java.util.Map;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.integration.Message;
-import org.springframework.integration.MessageHeaders;
+import org.springframework.integration.IntegrationMessageHeaderAccessor;
 import org.springframework.integration.support.MessageBuilder;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
 
 /**
  * Marshaller implementation for JSON.
- * 
+ *
  * @author Sayantam Dey
- * 
  */
 public class JsonMessageMarshaller implements MessageMarshaller {
 
@@ -70,25 +70,10 @@ public class JsonMessageMarshaller implements MessageMarshaller {
 			MessageHeaders messageHeaders) {
 
 		Map<String, String> map = new HashMap<String, String>();
-		if (messageHeaders.getCorrelationId() != null) {
-			map.put(HeaderKeys.CORRELATION_ID, messageHeaders
-					.getCorrelationId().toString());
-		}
-		if (messageHeaders.getExpirationDate() != null) {
-			map.put(HeaderKeys.EXPIRATION_DATE, messageHeaders
-					.getExpirationDate().toString());
-		}
-		if (messageHeaders.getPriority() != null) {
-			map.put(HeaderKeys.PRIORITY, messageHeaders.getPriority()
-					.toString());
-		}
-		if (messageHeaders.getSequenceNumber() != null) {
-			map.put(HeaderKeys.SEQUENCE_NUMBER, messageHeaders
-					.getSequenceNumber().toString());
-		}
-		if (messageHeaders.getSequenceSize() != null) {
-			map.put(HeaderKeys.SEQUENCE_SIZE, messageHeaders.getSequenceSize()
-					.toString());
+		for (String s : new String[]{HeaderKeys.CORRELATION_ID, HeaderKeys.EXPIRATION_DATE, HeaderKeys.PRIORITY, HeaderKeys.SEQUENCE_NUMBER, HeaderKeys.SEQUENCE_SIZE}) {
+			if (messageHeaders.get(s) != null) {
+				map.put(s, messageHeaders.get(s).toString());
+			}
 		}
 		return map;
 	}
@@ -182,7 +167,7 @@ public class JsonMessageMarshaller implements MessageMarshaller {
 	}
 
 	private void setProperties(MessageBuilder<Object> builder,
-			JSONObject properties) throws JSONException {
+	                           JSONObject properties) throws JSONException {
 
 		if (properties.has(HeaderKeys.CORRELATION_ID)) {
 			builder.setCorrelationId(properties
@@ -233,7 +218,7 @@ public class JsonMessageMarshaller implements MessageMarshaller {
 
 	/**
 	 * Override this method to provide a custom ObjectMapper.
-	 * 
+	 *
 	 * @return ObjectMapper
 	 */
 	protected ObjectMapper getObjectMapper() {
@@ -245,11 +230,11 @@ public class JsonMessageMarshaller implements MessageMarshaller {
 	}
 
 	private abstract class HeaderKeys {
-		public static final String CORRELATION_ID = "CorrelationId";
-		private static final String EXPIRATION_DATE = "ExpirationDate";
-		private static final String PRIORITY = "Priority";
-		private static final String SEQUENCE_NUMBER = "SequenceNumber";
-		private static final String SEQUENCE_SIZE = "SequenceSize";
+		public static final String CORRELATION_ID = IntegrationMessageHeaderAccessor.CORRELATION_ID;
+		private static final String EXPIRATION_DATE = IntegrationMessageHeaderAccessor.EXPIRATION_DATE;
+		private static final String PRIORITY = IntegrationMessageHeaderAccessor.PRIORITY;
+		private static final String SEQUENCE_NUMBER = IntegrationMessageHeaderAccessor.SEQUENCE_NUMBER;
+		private static final String SEQUENCE_SIZE = IntegrationMessageHeaderAccessor.SEQUENCE_SIZE;
 	}
 
 }

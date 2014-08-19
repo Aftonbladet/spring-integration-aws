@@ -1,23 +1,21 @@
 package org.springframework.integration.aws.sqs.outbound;
 
-import org.springframework.integration.Message;
 import org.springframework.integration.aws.sqs.core.SqsExecutor;
 import org.springframework.integration.handler.AbstractReplyProducingMessageHandler;
 import org.springframework.integration.support.MessageBuilder;
+import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
 
 /**
- * 
  * @author Sayantam Dey
  * @since 1.0
- * 
  */
 public class SqsOutboundGateway extends AbstractReplyProducingMessageHandler {
 
 	private SqsExecutor sqsExecutor;
 	private boolean producesReply = true; // false for
-											// outbound-channel-adapter, true
-											// for outbound-gateway
+	// outbound-channel-adapter, true
+	// for outbound-gateway
 
 	public SqsOutboundGateway() {
 		super();
@@ -51,10 +49,8 @@ public class SqsOutboundGateway extends AbstractReplyProducingMessageHandler {
 	/**
 	 * If set to 'false', this component will act as an Outbound Channel
 	 * Adapter. If not explicitly set this property will default to 'true'.
-	 * 
-	 * @param producesReply
-	 *            Defaults to 'true'.
-	 * 
+	 *
+	 * @param producesReply Defaults to 'true'.
 	 */
 	public void setProducesReply(boolean producesReply) {
 		this.producesReply = producesReply;

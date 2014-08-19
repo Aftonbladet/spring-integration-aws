@@ -1,44 +1,29 @@
 package org.springframework.integration.aws.sns.core;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.services.sns.AmazonSNSClient;
+import com.amazonaws.services.sns.model.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.integration.Message;
-import org.springframework.integration.MessagingException;
-import org.springframework.integration.aws.AwsUtil;
-import org.springframework.integration.aws.JsonMessageMarshaller;
-import org.springframework.integration.aws.MessageMarshaller;
-import org.springframework.integration.aws.MessageMarshallerException;
-import org.springframework.integration.aws.Permission;
+import org.springframework.integration.aws.*;
 import org.springframework.integration.aws.sns.support.SnsTestProxy;
 import org.springframework.integration.aws.sqs.core.SqsExecutor;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessagingException;
 import org.springframework.util.Assert;
 
-import com.amazonaws.ClientConfiguration;
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.services.sns.AmazonSNSClient;
-import com.amazonaws.services.sns.model.AddPermissionRequest;
-import com.amazonaws.services.sns.model.CreateTopicRequest;
-import com.amazonaws.services.sns.model.CreateTopicResult;
-import com.amazonaws.services.sns.model.GetTopicAttributesResult;
-import com.amazonaws.services.sns.model.PublishRequest;
-import com.amazonaws.services.sns.model.PublishResult;
-import com.amazonaws.services.sns.model.SubscribeRequest;
-import com.amazonaws.services.sns.model.SubscribeResult;
-import com.amazonaws.services.sns.model.Subscription;
-import com.amazonaws.services.sns.model.Topic;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Bundles common core logic for the Sns components.
- * 
+ *
  * @author Sayantam Dey
  * @since 1.0
- * 
  */
 public class SnsExecutor implements InitializingBean, DisposableBean {
 
@@ -129,9 +114,9 @@ public class SnsExecutor implements InitializingBean, DisposableBean {
 				.getSubscriptions()) {
 			if (subscription.getTopicArn().equals(topicArn)
 					&& subscription.getProtocol().equals(
-							urlSubscription.getProtocol())
+					urlSubscription.getProtocol())
 					&& subscription.getEndpoint().contains(
-							urlSubscription.getEndpoint())) {
+					urlSubscription.getEndpoint())) {
 				if (!subscription.getSubscriptionArn().equals(
 						"PendingConfirmation")) {
 					snsUrlSubscriptionArn = subscription.getSubscriptionArn();
@@ -172,9 +157,9 @@ public class SnsExecutor implements InitializingBean, DisposableBean {
 				.getSubscriptions()) {
 			if (subscription.getTopicArn().equals(topicArn)
 					&& subscription.getProtocol().equals(
-							sqsSubscription.getProtocol())
+					sqsSubscription.getProtocol())
 					&& subscription.getEndpoint().equals(
-							sqsSubscription.getEndpoint())) {
+					sqsSubscription.getEndpoint())) {
 				snsSqsSubscriptionArn = subscription.getSubscriptionArn();
 				break;
 			}
@@ -217,7 +202,6 @@ public class SnsExecutor implements InitializingBean, DisposableBean {
 
 	/**
 	 * Executes the outbound Sns Operation.
-	 * 
 	 */
 	public Object executeOutboundOperation(final Message<?> message) {
 
@@ -262,7 +246,7 @@ public class SnsExecutor implements InitializingBean, DisposableBean {
 
 	/**
 	 * Sets the topic ARN. Must not be empty.
-	 * 
+	 *
 	 * @param topicArn
 	 */
 	public void setTopicArn(String topicArn) {
@@ -271,9 +255,8 @@ public class SnsExecutor implements InitializingBean, DisposableBean {
 
 	/**
 	 * Sets topic name
-	 * 
-	 * @param topicName
-	 *            Must not be null
+	 *
+	 * @param topicName Must not be null
 	 */
 	public void setTopicName(String topicName) {
 		this.topicName = topicName;
@@ -281,7 +264,7 @@ public class SnsExecutor implements InitializingBean, DisposableBean {
 
 	/**
 	 * Sets the SnsTestProxy instance for testing without actual AWS.
-	 * 
+	 *
 	 * @param snsTestProxy
 	 */
 	public void setSnsTestProxy(SnsTestProxy snsTestProxy) {
@@ -290,7 +273,7 @@ public class SnsExecutor implements InitializingBean, DisposableBean {
 
 	/**
 	 * Sets the AWS credentials provider.
-	 * 
+	 *
 	 * @param awsCredentialsProvider
 	 */
 	public void setAwsCredentialsProvider(
@@ -300,7 +283,7 @@ public class SnsExecutor implements InitializingBean, DisposableBean {
 
 	/**
 	 * Sets the AWS client configuration.
-	 * 
+	 *
 	 * @param awsClientConfiguration
 	 */
 	public void setAwsClientConfiguration(
@@ -310,7 +293,7 @@ public class SnsExecutor implements InitializingBean, DisposableBean {
 
 	/**
 	 * Sets the AWS region ID.
-	 * 
+	 *
 	 * @param regionId
 	 */
 	public void setRegionId(String regionId) {
@@ -335,7 +318,7 @@ public class SnsExecutor implements InitializingBean, DisposableBean {
 
 	/**
 	 * Sets the permissions to be applied to the SNS topic.
-	 * 
+	 *
 	 * @param permissions
 	 */
 	public void setPermissions(Set<Permission> permissions) {

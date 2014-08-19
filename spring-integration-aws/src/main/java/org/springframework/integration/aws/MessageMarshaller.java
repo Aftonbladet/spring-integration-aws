@@ -1,19 +1,18 @@
 package org.springframework.integration.aws;
 
-import org.springframework.integration.Message;
+import org.springframework.messaging.Message;
 
 /**
  * Interface for marshalling a Message to a String suitable for sending to AWS
  * and unmarshalling message from AWS back to a Message.
- * 
+ *
  * @author Sayantam Dey
- * 
  */
 public interface MessageMarshaller {
 
 	/**
 	 * Converts a Message to a String.
-	 * 
+	 *
 	 * @param message
 	 * @return serialized string
 	 * @throws MessageMarshallerException
@@ -22,7 +21,7 @@ public interface MessageMarshaller {
 
 	/**
 	 * Converts input String to Message.
-	 * 
+	 *
 	 * @param input
 	 * @return Message
 	 * @throws MessageMarshallerException

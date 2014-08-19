@@ -3,6 +3,8 @@ target/
 .settings/
 .project
 .springBeans
+.idea
+*.iml
 InterAccountSNSPermissionFlow.properties
 InterAccountSQSPermissionFlow.properties
 aws-keys.properties

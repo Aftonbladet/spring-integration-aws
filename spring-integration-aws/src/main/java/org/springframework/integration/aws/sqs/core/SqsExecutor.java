@@ -17,8 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.integration.Message;
-import org.springframework.integration.MessagingException;
 import org.springframework.integration.aws.AwsUtil;
 import org.springframework.integration.aws.JsonMessageMarshaller;
 import org.springframework.integration.aws.MessageMarshaller;
@@ -26,6 +24,8 @@ import org.springframework.integration.aws.MessageMarshallerException;
 import org.springframework.integration.aws.Permission;
 import org.springframework.integration.aws.sqs.SqsHeaders;
 import org.springframework.integration.support.MessageBuilder;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessagingException;
 import org.springframework.util.Assert;
 
 import com.amazonaws.ClientConfiguration;
@@ -57,10 +57,9 @@ import com.amazonaws.util.Md5Utils;
 
 /**
  * Bundles common core logic for the Sqs components.
- * 
+ *
  * @author Sayantam Dey
  * @since 1.0
- * 
  */
 public class SqsExecutor implements InitializingBean, DisposableBean {
 
@@ -208,7 +207,6 @@ public class SqsExecutor implements InitializingBean, DisposableBean {
 
 	/**
 	 * Executes the outbound Sqs Operation.
-	 * 
 	 */
 	public Object executeOutboundOperation(final Message<?> message) {
 
@@ -240,10 +238,8 @@ public class SqsExecutor implements InitializingBean, DisposableBean {
 
 	/**
 	 * Execute a retrieving (polling) Sqs operation.
-	 * 
-	 * @param timeout
-	 *            time to wait for a message to return.
-	 * 
+	 *
+	 * @param timeout time to wait for a message to return.
 	 * @return The payload object, which may be null.
 	 */
 	public Message<?> poll(long timeout) {
@@ -380,9 +376,8 @@ public class SqsExecutor implements InitializingBean, DisposableBean {
 	/**
 	 * Example property to illustrate usage of properties in Spring Integration
 	 * components. Replace with your own logic.
-	 * 
-	 * @param queueName
-	 *            Must not be null
+	 *
+	 * @param queueName Must not be null
 	 */
 	public void setQueueName(String queueName) {
 		Assert.hasText(queueName, "queueName must be neither null nor empty");
@@ -392,7 +387,7 @@ public class SqsExecutor implements InitializingBean, DisposableBean {
 	/**
 	 * Set the queue implementation. Useful for testing the queue without
 	 * actually invoking AWS.
-	 * 
+	 *
 	 * @param queue
 	 */
 	public void setQueue(BlockingQueue<String> queue) {
@@ -401,7 +396,7 @@ public class SqsExecutor implements InitializingBean, DisposableBean {
 
 	/**
 	 * Sets the AWS client configuration.
-	 * 
+	 *
 	 * @param awsClientConfiguration
 	 */
 	public void setAwsClientConfiguration(
@@ -411,7 +406,7 @@ public class SqsExecutor implements InitializingBean, DisposableBean {
 
 	/**
 	 * Sets the AWS credentials provider.
-	 * 
+	 *
 	 * @param awsCredentialsProvider
 	 */
 	public void setAwsCredentialsProvider(
@@ -426,19 +421,19 @@ public class SqsExecutor implements InitializingBean, DisposableBean {
 	/**
 	 * Sets the timeout (in seconds) for a receive message operation, defaults
 	 * to {@value #DEFAULT_RECV_MESG_WAIT} seconds.
-	 * 
+	 *
 	 * @param receiveMessageWaitTimeout
 	 */
 	public void setReceiveMessageWaitTimeout(int receiveMessageWaitTimeout) {
 		Assert.isTrue(receiveMessageWaitTimeout >= 0
-				&& receiveMessageWaitTimeout <= 20,
+						&& receiveMessageWaitTimeout <= 20,
 				"'receiveMessageWaitTimeout' must be an integer from 0 to 20 (seconds).");
 		this.receiveMessageWaitTimeout = receiveMessageWaitTimeout;
 	}
 
 	/**
 	 * Sets the AWS region ID, defaults to us-east.
-	 * 
+	 *
 	 * @param regionId
 	 */
 	public void setRegionId(String regionId) {
@@ -448,7 +443,7 @@ public class SqsExecutor implements InitializingBean, DisposableBean {
 	/**
 	 * Sets the number of messages to prefetch, defaults to
 	 * {@value #DEFAULT_MESSAGE_PREFETCH_COUNT}.
-	 * 
+	 *
 	 * @param prefetchCount
 	 */
 	public void setPrefetchCount(int prefetchCount) {
@@ -459,7 +454,7 @@ public class SqsExecutor implements InitializingBean, DisposableBean {
 
 	/**
 	 * Sets the message delivery delay from SQS. By default there is no delay.
-	 * 
+	 *
 	 * @param messageDelay
 	 */
 	public void setMessageDelay(Integer messageDelay) {
@@ -470,7 +465,7 @@ public class SqsExecutor implements InitializingBean, DisposableBean {
 
 	/**
 	 * Sets the maximum message size.
-	 * 
+	 *
 	 * @param maximumMessageSize
 	 */
 	public void setMaximumMessageSize(Integer maximumMessageSize) {
@@ -483,7 +478,7 @@ public class SqsExecutor implements InitializingBean, DisposableBean {
 	/**
 	 * Sets the message retention period at SQS. Messages older than this will
 	 * be automatically be dropped by SQS.
-	 * 
+	 *
 	 * @param messageRetentionPeriod
 	 */
 	public void setMessageRetentionPeriod(Integer messageRetentionPeriod) {
@@ -498,7 +493,7 @@ public class SqsExecutor implements InitializingBean, DisposableBean {
 	 * Sets the visibility timeout in seconds. SQS must receive an
 	 * acknowledgment before this timeout occurs or else the message is
 	 * re-delivered.
-	 * 
+	 *
 	 * @param visibilityTimeout
 	 */
 	public void setVisibilityTimeout(Integer visibilityTimeout) {

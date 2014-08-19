@@ -7,7 +7,7 @@ import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.integration.MessagingException;
+import org.springframework.messaging.MessagingException;
 
 public abstract class AwsUtil {
 
@@ -17,7 +17,7 @@ public abstract class AwsUtil {
 	}
 
 	public static void addPermissions(Map<String, String> attributes,
-			Set<Permission> permissions, AddPermissionHandler handler) {
+	                                  Set<Permission> permissions, AddPermissionHandler handler) {
 
 		String policyStr = attributes.get("Policy");
 		Set<String> existingLabels = new HashSet<String>();

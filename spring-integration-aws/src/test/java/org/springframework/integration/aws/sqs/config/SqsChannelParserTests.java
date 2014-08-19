@@ -1,25 +1,21 @@
 package org.springframework.integration.aws.sqs.config;
 
-import static org.junit.Assert.*;
-
-import java.util.concurrent.Callable;
-
 import org.junit.After;
 import org.junit.Test;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.integration.Message;
-import org.springframework.integration.MessageChannel;
-import org.springframework.integration.MessagingException;
 import org.springframework.integration.aws.sqs.SqsExecutorProxy;
 import org.springframework.integration.aws.sqs.SqsHeaders;
 import org.springframework.integration.aws.sqs.channel.SubscribableSqsChannel;
 import org.springframework.integration.aws.sqs.core.SqsExecutor;
 import org.springframework.integration.channel.DirectChannel;
-import org.springframework.integration.core.MessageHandler;
-import org.springframework.integration.core.PollableChannel;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.integration.test.util.TestUtils;
+import org.springframework.messaging.*;
+
+import java.util.concurrent.Callable;
+
+import static org.junit.Assert.*;
 
 
 public class SqsChannelParserTests {

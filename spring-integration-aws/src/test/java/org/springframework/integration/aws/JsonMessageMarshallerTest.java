@@ -9,8 +9,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.springframework.integration.Message;
-import org.springframework.integration.MessageHeaders;
+
+import static org.springframework.integration.IntegrationMessageHeaderAccessor.*;
+
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.integration.aws.support.TestPojo;
 import org.springframework.integration.support.MessageBuilder;
 
@@ -47,7 +50,7 @@ public class JsonMessageMarshallerTest {
 		pojo.setName("John Doe");
 		pojo.setEmail("user@example.com");
 		long expiryTime = new Date().getTime();
-		Long[] ary = new Long[] { 1L, 2L, 3L };
+		Long[] ary = new Long[]{1L, 2L, 3L};
 		Message<String> sent = MessageBuilder.withPayload("Hello, World")
 				.setCorrelationId("ABC").setExpirationDate(expiryTime)
 				.setPriority(2).setSequenceNumber(2).setSequenceSize(5)
@@ -61,14 +64,14 @@ public class JsonMessageMarshallerTest {
 		assertEquals(sent.getPayload(), received.getPayload());
 		MessageHeaders sentHeaders = sent.getHeaders();
 		MessageHeaders recvHeaders = received.getHeaders();
-		assertEquals(sentHeaders.getCorrelationId(),
-				recvHeaders.getCorrelationId());
-		assertEquals(new Long(expiryTime), recvHeaders.getExpirationDate());
-		assertEquals(sentHeaders.getPriority(), recvHeaders.getPriority());
-		assertEquals(sentHeaders.getSequenceNumber(),
-				recvHeaders.getSequenceNumber());
-		assertEquals(sentHeaders.getSequenceSize(),
-				recvHeaders.getSequenceSize());
+		assertEquals(sentHeaders.get(CORRELATION_ID),
+				recvHeaders.get(CORRELATION_ID));
+		assertEquals(new Long(expiryTime), (Long) recvHeaders.get(EXPIRATION_DATE));
+		assertEquals(sentHeaders.get(PRIORITY), recvHeaders.get(PRIORITY));
+		assertEquals(sentHeaders.get(SEQUENCE_NUMBER),
+				recvHeaders.get(SEQUENCE_NUMBER));
+		assertEquals(sentHeaders.get(SEQUENCE_SIZE),
+				recvHeaders.get(SEQUENCE_SIZE));
 		assertEquals(sentHeaders.get("fubar", String.class),
 				recvHeaders.get("fubar", String.class));
 		assertEquals(pojo, recvHeaders.get("pojo", TestPojo.class));
@@ -92,7 +95,7 @@ public class JsonMessageMarshallerTest {
 	public void testArrayofPrimitivesPayload()
 			throws MessageMarshallerException {
 
-		Integer[] aryIn = new Integer[] { 1, 2 };
+		Integer[] aryIn = new Integer[]{1, 2};
 
 		String packet = marshaller.serialize(MessageBuilder.withPayload(aryIn)
 				.build());
